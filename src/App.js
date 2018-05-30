@@ -32,7 +32,6 @@ class LambdaDemo extends Component {
 
 class App extends Component {
   componentDidMount() {
-    console.log('currentuser ',netlifyIdentity.currentUser())
     netlifyIdentity.init();
   }
 
@@ -43,6 +42,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('current_user is',netlifyIdentity.currentUser())
     return (
         <div className="App">
           <header className="App-header">
