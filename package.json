@@ -16,8 +16,8 @@
     "start": "react-scripts start",
     "start:lambda": "netlify-lambda serve src/lambda",
     "build": "react-scripts build",
-    "build:netlify": "npm run build && cp _redirects build/_redirects",
     "build:lambda": "netlify-lambda build src/lambda",
+    "build:netlify": "npm run build && cp _redirects build/_redirects && npm run build:lambda",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
