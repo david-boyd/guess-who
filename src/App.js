@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import netlifyIdentity from "netlify-identity-widget"
 
 class LambdaDemo extends Component {
   constructor(props) {
@@ -7,6 +8,15 @@ class LambdaDemo extends Component {
     this.state = {loading: false, msg: null};
   }
 
+  componentDidMount() {
+    netlifyIdentity.init();
+  }
+
+  handleIdentity = (e) => {
+    e.preventDefault();
+    netlifyIdentity.open();
+  }
+  
   handleClick = (e) => {
     e.preventDefault();
 
@@ -15,6 +25,8 @@ class LambdaDemo extends Component {
         .then(response => response.json())
         .then(json => this.setState({loading: false, msg: json.msg}));
   }
+
+
 
   render() {
     const {loading, msg} = this.state;
@@ -33,9 +45,7 @@ class App extends Component {
         <header className="App-header">
         <h1 className="App-title">Welcome to React</h1>
     </header>
-    <p className="App-intro">
-        To get started, edit <code>src/App.js</code> and save to reload.
-    </p>
+    <p><a href="#" onClick={this.handleIdentity}>User Status</a></p>
     <LambdaDemo/>
     </div>
   );
