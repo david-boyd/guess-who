@@ -36,13 +36,13 @@ class App extends Component {
   }
 
   handleIdentity = (e) => {
-    console.log("HERE DAVE")
+    console.log("HERE DAVE",netlifyIdentity.currentUser())
     e.preventDefault();
     netlifyIdentity.open();
   }
 
+
   render() {
-    console.log('current_user is',netlifyIdentity.currentUser())
     return (
         <div className="App">
           <header className="App-header">
