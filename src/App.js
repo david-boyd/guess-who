@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import netlifyIdentity from "netlify-identity-widget"
 
@@ -8,16 +8,7 @@ class LambdaDemo extends Component {
     this.state = {loading: false, msg: null};
   }
 
-  componentDidMount() {
-    netlifyIdentity.init();
-  }
 
-  handleIdentity = (e) => {
-    console.log('opening modal')
-    e.preventDefault();
-    netlifyIdentity.open();
-  }
-  
   handleClick = (e) => {
     e.preventDefault();
 
@@ -28,28 +19,39 @@ class LambdaDemo extends Component {
   }
 
 
-
   render() {
     const {loading, msg} = this.state;
 
     return <p>
-    <button onClick={this.handleClick}>{loading ? 'Loading...' : 'Call Lambda'}</button><br/>
-    <span>{msg}</span>
+      <button onClick={this.handleClick}>{loading ? 'Loading...' : 'Call Lambda'}</button>
+      <br/>
+      <span>{msg}</span>
     </p>
   }
 }
 
 class App extends Component {
+  componentDidMount() {
+    console.log('currentuser ',netlifyIdentity.currentUser())
+    netlifyIdentity.init();
+  }
+
+  handleIdentity = (e) => {
+    console.log("HERE DAVE")
+    e.preventDefault();
+    netlifyIdentity.open();
+  }
+
   render() {
     return (
         <div className="App">
-        <header className="App-header">
-        <h1 className="App-title">Welcome to React</h1>
-    </header>
-    <p><a href="#" onClick={this.handleIdentity}>User Status</a></p>
-    <LambdaDemo/>
-    </div>
-  );
+          <header className="App-header">
+            <h1 className="App-title">Welcome to React</h1>
+          </header>
+          <p><a href="#" onClick={this.handleIdentity}>User Login</a></p>
+          <LambdaDemo/>
+        </div>
+    );
   }
 }
 
