@@ -13,6 +13,7 @@ class LambdaDemo extends Component {
   }
 
   handleIdentity = (e) => {
+    console.log('opening modal')
     e.preventDefault();
     netlifyIdentity.open();
   }
