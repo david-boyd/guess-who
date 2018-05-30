@@ -9,19 +9,44 @@ class LambdaDemo extends Component {
   }
 
 
+  generateHeaders() {
+    const headers = {"Content-Type": "application/json"};
+    if (netlifyIdentity.currentUser()) {
+      return netlifyIdentity.currentUser().jwt().then((token) => {
+        return {...headers, Authorization: `Bearer ${token}`};
+      })
+    }
+    return Promise.resolve(headers);
+  }
+
   handleClick = (e) => {
     e.preventDefault();
 
     this.setState({loading: true});
-    fetch('/.netlify/functions/hello')
-        .then(response => response.json())
-        .then(json => this.setState({loading: false, msg: json.msg}));
+    this.generateHeaders().then((headers) => {
+      console.log('dave')
+      fetch('/.netlify/functions/hello', {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          text: this.state
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          response.text().then(err => {
+            throw (err)
+          });
+        }
+      })
+      .then(() => this.setState({loading: false, text: null, success: true, error: null}))
+      .catch(err => this.setState({loading: false, success: false, error: err.toString()}))
+    })
   }
 
 
   render() {
     const {loading, msg} = this.state;
-
     return <p>
       <button onClick={this.handleClick}>{loading ? 'Loading...' : 'Call Lambda'}</button>
       <br/>
@@ -36,7 +61,7 @@ class App extends Component {
   }
 
   handleIdentity = (e) => {
-    console.log("HERE DAVE",netlifyIdentity.currentUser())
+    console.log("HERE DAVE", netlifyIdentity.currentUser())
     e.preventDefault();
     netlifyIdentity.open();
   }
@@ -48,7 +73,7 @@ class App extends Component {
           <header className="App-header">
             <h1 className="App-title">Welcome to React</h1>
           </header>
-          <p><a href="#" onClick={this.handleIdentity}>User Login</a></p>
+          <p><a href="#" onClick={this.handleIdentity}>User Stats</a></p>
           <LambdaDemo/>
         </div>
     );
